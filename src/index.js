@@ -2,6 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
+function Header() {
+  return <h1 className="header">Tic Tac Toe</h1>;
+}
+
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
@@ -69,7 +73,7 @@ class Game extends React.Component {
       history: history.concat([
         {
           squares: squares,
-          latestMove: i,
+          lastMove: i,
         },
       ]),
       stepNumber: history.length,
@@ -90,9 +94,9 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-      const latestMove = step.latestMove;
-      const col = 1 + (latestMove % 3);
-      const row = 1 + Math.floor(latestMove / 3);
+      const lastMove = step.lastMove;
+      const col = 1 + (lastMove % 3);
+      const row = 1 + Math.floor(lastMove / 3);
       const desc = move ? "Move #" + move + ` (${col},${row})` : "Game start";
 
       if (step === current) {
@@ -113,7 +117,7 @@ class Game extends React.Component {
         </li>
       );
     });
-    
+
     let status;
     if (winner) {
       status = "Winner: " + winner.winner;
@@ -124,16 +128,20 @@ class Game extends React.Component {
     }
 
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
+      <div>
+        <Header />
+
+        <div className="game">
+          <div className="game-board">
+            <Board
+              squares={current.squares}
+              onClick={(i) => this.handleClick(i)}
+            />
+          </div>
+          <div className="game-info">
+            <div>{status}</div>
+            <ol>{moves}</ol>
+          </div>
         </div>
       </div>
     );
