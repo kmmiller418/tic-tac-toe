@@ -53,7 +53,7 @@ class Game extends React.Component {
         },
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
     };
   }
 
@@ -77,10 +77,10 @@ class Game extends React.Component {
   }
 
   jumpTo(step) {
-      this.setState({
-          stepNumber: step,
-          xIsNext: (step%2) === 0
-      });
+    this.setState({
+      stepNumber: step,
+      xIsNext: step % 2 === 0,
+    });
   }
 
   render() {
@@ -89,32 +89,30 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-        const desc = move ? 
-        'Go to move #' + move :
-        'Go to game start';
-        if (step === current) {
-            return(
-            <li key={move}>
-                <button style={{fontWeight:"bold"}}
-                onClick={() => this.jumpTo(move)}>
-                    {desc}
-                </button>
-            </li>)
-        }
+      const desc = move ? "Go to move #" + move : "Go to game start";
+      if (step === current) {
         return (
-            <li key={move}>
-                <button 
-                onClick={() => this.jumpTo(move)}>
-                    {desc}
-                </button>
-            </li>
-        )
-    })
+          <li key={move}>
+            <button
+              style={{ fontWeight: "bold" }}
+              onClick={() => this.jumpTo(move)}
+            >
+              {desc}
+            </button>
+          </li>
+        );
+      }
+      return (
+        <li key={move}>
+          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      );
+    });
     let status;
     if (winner) {
       status = "Winner: " + winner;
-    } else if (this.state.stepNumber === 9) { 
-        status = "It was a draw" 
+    } else if (this.state.stepNumber === 9) {
+      status = "It was a draw";
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -154,7 +152,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return { winner: squares[a], lines: lines };
     }
   }
   return null;
